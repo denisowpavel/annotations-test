@@ -1,8 +1,11 @@
 export interface IAnnotation {
   id: number;
-  top: number
-  left: number;
+  view: IAnnotationView;
   content?: IAnnotationContent;
 }
-export interface IAnnotationContent {
+export interface IAnnotationView {
+  top: number;
+  left: number;
+  color: string;
 }
+export interface IAnnotationContent {}

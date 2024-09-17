@@ -9,14 +9,17 @@ export class AnnotationHelpersService {
   generatedAnnotation(left: number, top: number): IAnnotation {
     return {
       id: this.generatedId,
-      top,
-      left,
+      view: {
+        color: this.generatedColor,
+        top,
+        left,
+      },
     };
   }
   get generatedId(): number {
     return Math.floor(Math.random() * 999999999999);
   }
-  get generatedColors(): string {
+  get generatedColor(): string {
     return randomColors[Math.floor(Math.random() * randomColors.length)];
   }
 

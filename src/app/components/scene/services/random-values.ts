@@ -1,4 +1,7 @@
 export const randomColors = [
-  '#bde1d5',
-  '#fbdcd4',
-]
+  '#9297c8',
+  '#ee7036',
+  '#f7cb9a',
+  '#f6c1a7',
+  '#b6c796',
+];
