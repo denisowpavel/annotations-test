@@ -1,5 +1,5 @@
-@for (annotation of annotationCollection; track annotation.id) {
-  <at-annotation [value]="annotation"></at-annotation>
+@for (annotation of sceneViewService.annotationCollection; track annotation.id) {
+  <at-annotation [value]="annotation" (remove)="sceneViewService.removeAnnotation($event)"></at-annotation>
 }
 <div id="lipsum">
   <p>

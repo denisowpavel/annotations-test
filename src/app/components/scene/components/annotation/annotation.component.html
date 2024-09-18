@@ -1,9 +1,11 @@
 <div
-  class="annotation"
+  class="annotation annotation-drag-area"
   [style.top.px]="currentSlotTop()"
   [style.left.px]="currentSlotLeft()"
-  [style.background-color]="this.value.view.color"
+  [style.background-color]="this.value().view.color"
 >
   <div class="content">
+
   </div>
+  <button class="remove" (click)="remove.emit(value())">✖</button>
 </div>

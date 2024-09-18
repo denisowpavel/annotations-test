@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { randomColors } from './random-values';
 import { IAnnotation } from '../types/annotation';
+import {LogicalFileSystem} from "@angular/compiler-cli";
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,13 @@ export class AnnotationHelpersService {
   }
   get generatedColor(): string {
     return randomColors[Math.floor(Math.random() * randomColors.length)];
+  }
+
+  isAnnotationElement(element: HTMLElement): boolean{
+    if(!element.parentElement){
+      return false;
+    }
+    return element?.classList.contains('annotation-drag-area') || this.isAnnotationElement(element.parentElement)
   }
 
   constructor() {}

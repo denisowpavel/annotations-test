@@ -20,21 +20,15 @@ import { AnnotationHelpersService } from './services/annotation-helpers.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SceneComponent {
-  public annotationCollection?: IAnnotation[] = [];
+
   @HostListener('document:click', ['$event']) onClickEvent(
-    event: MouseEvent,
+    event: PointerEvent,
   ): void {
-    console.log('C', event);
-    this.annotationCollection?.push(
-      this.annotationHelpersService.generatedAnnotation(
-        event.pageX,
-        event.pageY,
-      ),
-    );
+    this.sceneViewService.onSceneClick(event);
   }
 
   constructor(
-    public annotationHelpersService: AnnotationHelpersService,
+    private annotationHelpersService: AnnotationHelpersService,
     public sceneViewService: SceneViewService,
     private elementRef: ElementRef,
   ) {}

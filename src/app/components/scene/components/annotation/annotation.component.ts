@@ -5,7 +5,7 @@ import {
   ElementRef,
   input,
   InputSignal,
-  OnInit,
+  OnInit, output, OutputEmitterRef,
   Signal,
 } from '@angular/core';
 import { IAnnotation } from '../../types/annotation';
@@ -28,11 +28,13 @@ export class AnnotationComponent {
       color: '#F00',
     },
   });
-  public currentSlotTop: Signal<number> = computed((): number => {
+  remove: OutputEmitterRef<IAnnotation> = output()
+  currentSlotTop: Signal<number> = computed((): number => {
     return this.value().view.top;
   });
 
-  public currentSlotLeft: Signal<number> = computed((): number => {
+  currentSlotLeft: Signal<number> = computed((): number => {
     return this.value().view.left;
   });
+
 }
