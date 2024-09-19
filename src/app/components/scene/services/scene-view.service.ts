@@ -42,17 +42,35 @@ export class SceneViewService {
     if (this.annotationHelpersService.isAnnotationElement(target)) {
       return;
     }
+
     if (this.documentHelpersService.isDocumentElement(target)) {
+
+      //TODO: fix zoom factor accuracy
+      const docId = this.documentHelpersService.documentIdByElement(target);
+
+      const left =
+        event.pageX -
+        (this.documentHelpersService.documentElement(target)?.offsetLeft || 0);
+      const top =
+        event.pageY -
+        (this.documentHelpersService.documentElement(target)?.offsetTop || 0);
+      const documentData = this.documentCollection.find(
+        (doc) => doc.id === docId,
+      );
+      if(!documentData){
+        throw 'no documentData'
+      }
+      const scaleStepW = (documentData.width / 2) * (this.view().scale - 1);
+      const scaleCoefficientW =
+        (left - documentData.width) / (documentData.width / 2) + 1;
+      const scaleShiftW = scaleStepW * scaleCoefficientW;
+      const scaleStepH = (documentData.height / 2) * (this.view().scale - 1);
+      const scaleCoefficientH =
+        (top - documentData.height) / (documentData.height / 2) + 1;
+      const scaleShiftH = scaleStepH * scaleCoefficientH;
+
       this.annotationCollection?.push(
-        this.annotationHelpersService.generatedAnnotation(
-          event.pageY -
-            (this.documentHelpersService.documentElement(target)?.offsetTop ||
-              0),
-          event.pageX -
-            (this.documentHelpersService.documentElement(target)?.offsetLeft ||
-              0),
-          this.documentHelpersService.documentIdByElement(target),
-        ),
+        this.annotationHelpersService.generatedAnnotation(top-scaleShiftH, left-scaleShiftW, docId),
       );
     }
   }
@@ -66,8 +84,11 @@ export class SceneViewService {
   }
 
   updateScale(delta: number): void {
-    this.view.update((v) => ({
-      scale: (v.scale + delta * 0.001)
-    }) as ISceneView);
+    this.view.update(
+      (v) =>
+        ({
+          scale: v.scale + delta * 0.001,
+        }) as ISceneView,
+    );
   }
 }
