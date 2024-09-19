@@ -9,10 +9,12 @@ import {
   output,
   OutputEmitterRef,
   Signal,
+  WritableSignal,
 } from '@angular/core';
 import { IAnnotation } from '../../types/annotation';
 import { JsonPipe } from '@angular/common';
 import { SceneViewService } from '../../services/scene-view.service';
+import { IDocument, IDocumentMeta } from '../../types/document';
 
 @Component({
   selector: 'at-annotation',
@@ -22,7 +24,7 @@ import { SceneViewService } from '../../services/scene-view.service';
   styleUrl: './annotation.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnnotationComponent {
+export class AnnotationComponent implements OnInit {
   value: InputSignal<IAnnotation> = input({
     id: 0,
     documentID: 0,
@@ -33,21 +35,43 @@ export class AnnotationComponent {
     },
   });
   remove: OutputEmitterRef<IAnnotation> = output();
-
+  docMeta?: WritableSignal<IDocumentMeta>;
+  documentData?: IDocument;
   constructor(public sceneViewService: SceneViewService) {}
+  ngOnInit() {
+    this.docMeta = this.sceneViewService.documentMeta.get(
+      this.value().documentID,
+    );
+    this.documentData = this.sceneViewService.documentCollection?.find(
+      (d) => d.id === this.value().documentID,
+    );
+  }
+
   currentTop: Signal<number> = computed((): number => {
-    const docMeta = this.sceneViewService.documentMeta.get(this.value().documentID)
-    if(!docMeta){
-      throw 'document meta not find'
+    if (!this.docMeta || !this.documentData) {
+      throw 'document meta or document not find';
     }
-    return this.value().view.top + docMeta().offsetTop;
+    const scaleStep =
+      (this.documentData.height / 2) * (this.sceneViewService.view().scale - 1);
+    const scaleCoefficient = // for transform zoom only
+      (this.value().view.top - this.documentData.height) /
+        (this.documentData.height / 2) +
+      1;
+    const scaleShift = scaleStep * scaleCoefficient;
+    return this.value().view.top + scaleShift+ this.docMeta().offsetTop;
   });
 
   currentLeft: Signal<number> = computed((): number => {
-    const docMeta = this.sceneViewService.documentMeta.get(this.value().documentID)
-    if(!docMeta){
-      throw 'document meta not find'
+    if (!this.docMeta || !this.documentData) {
+      throw 'document meta or document not find';
     }
-    return this.value().view.left + docMeta().offsetLeft;
+    const scaleStep =
+      (this.documentData.width / 2) * (this.sceneViewService.view().scale - 1);
+    const scaleCoefficient = // for transform zoom only
+      (this.value().view.left - this.documentData.width) /
+        (this.documentData.width / 2) +
+      1;
+    const scaleShift = scaleStep * scaleCoefficient;
+    return this.value().view.left + scaleShift + this.docMeta().offsetLeft;
   });
 }
