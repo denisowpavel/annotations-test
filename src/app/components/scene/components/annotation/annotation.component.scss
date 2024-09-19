@@ -4,11 +4,7 @@
     display: block;
     position: absolute;
     width: 250px;
-    height: 30px;
-    border-radius: 0 var(--annotation-border-radius)
-      var(--annotation-border-radius) var(--annotation-border-radius);
-    box-shadow: var(--annotation-box-shadow);
-
+    padding: 10px 0;
     & .remove {
       display: block;
       position: absolute;
@@ -17,11 +13,11 @@
       background: none;
       border: 2px solid var(--color-smoke);
       border-radius: 50%;
-      width: 17px;
-      height: 17px;
+      width: 18px;
+      height: 18px;
       font-weight: 900;
-      font-size: 11px;
-      line-height: 11px;
+      font-size: 12px;
+      line-height: 12px;
       text-align: center;
       padding: 0;
       color: var(--color-smoke);
