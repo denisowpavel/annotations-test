@@ -1,9 +1,9 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { IAnnotation } from '../types/annotation';
 import { AnnotationHelpersService } from './annotation-helpers.service';
 import { INITIAL_SCENE_VIEW, ISceneView } from '../types/scene';
 import { DocumentHelpersService } from './document-helpers.service';
-import { IDocument } from '../types/document';
+import { IDocument, IDocumentMeta } from '../types/document';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +11,7 @@ import { IDocument } from '../types/document';
 export class SceneViewService {
   public annotationCollection: IAnnotation[] = [];
   public documentCollection: IDocument[] = [];
+  public documentMeta: Map<number, WritableSignal<IDocumentMeta>> = new Map();
 
   public view = signal<ISceneView>(INITIAL_SCENE_VIEW);
   constructor(
@@ -18,19 +19,38 @@ export class SceneViewService {
     private documentHelpersService: DocumentHelpersService,
   ) {
     this.documentCollection = this.documentHelpersService.MOCDocumentCollection;
+    this.initDocMeta();
   }
 
+  initDocMeta() {
+    this.documentCollection.forEach((doc) => {
+      this.documentMeta.set(
+        doc.id,
+        signal<IDocumentMeta>(this.documentHelpersService.documentMeta(doc.id)),
+      );
+    });
+  }
+  setDocMeta() {
+    this.documentCollection.forEach((doc) => {
+      this.documentMeta
+        .get(doc.id)
+        ?.set(this.documentHelpersService.documentMeta(doc.id));
+    });
+  }
   onSceneClick(event: PointerEvent): void {
     const target = event.target as HTMLElement;
     if (this.annotationHelpersService.isAnnotationElement(target)) {
       return;
     }
     if (this.documentHelpersService.isDocumentElement(target)) {
-      console.log()
       this.annotationCollection?.push(
         this.annotationHelpersService.generatedAnnotation(
-          event.pageX,
-          event.pageY,
+          event.pageY -
+            (this.documentHelpersService.documentElement(target)?.offsetTop ||
+              0),
+          event.pageX -
+            (this.documentHelpersService.documentElement(target)?.offsetLeft ||
+              0),
           this.documentHelpersService.documentIdByElement(target),
         ),
       );

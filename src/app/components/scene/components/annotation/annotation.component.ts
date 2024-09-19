@@ -5,11 +5,14 @@ import {
   ElementRef,
   input,
   InputSignal,
-  OnInit, output, OutputEmitterRef,
+  OnInit,
+  output,
+  OutputEmitterRef,
   Signal,
 } from '@angular/core';
 import { IAnnotation } from '../../types/annotation';
 import { JsonPipe } from '@angular/common';
+import { SceneViewService } from '../../services/scene-view.service';
 
 @Component({
   selector: 'at-annotation',
@@ -29,13 +32,22 @@ export class AnnotationComponent {
       color: '#F00',
     },
   });
-  remove: OutputEmitterRef<IAnnotation> = output()
-  currentSlotTop: Signal<number> = computed((): number => {
-    return this.value().view.top;
+  remove: OutputEmitterRef<IAnnotation> = output();
+
+  constructor(public sceneViewService: SceneViewService) {}
+  currentTop: Signal<number> = computed((): number => {
+    const docMeta = this.sceneViewService.documentMeta.get(this.value().documentID)
+    if(!docMeta){
+      throw 'document meta not find'
+    }
+    return this.value().view.top + docMeta().offsetTop;
   });
 
-  currentSlotLeft: Signal<number> = computed((): number => {
-    return this.value().view.left;
+  currentLeft: Signal<number> = computed((): number => {
+    const docMeta = this.sceneViewService.documentMeta.get(this.value().documentID)
+    if(!docMeta){
+      throw 'document meta not find'
+    }
+    return this.value().view.left + docMeta().offsetLeft;
   });
-
 }

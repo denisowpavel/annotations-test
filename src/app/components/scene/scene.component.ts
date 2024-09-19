@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  HostListener,
+  HostListener, AfterViewInit,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SceneViewService } from './services/scene-view.service';
@@ -20,17 +20,21 @@ import {DocumentComponent} from "./components/document/document.component";
   styleUrl: './scene.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SceneComponent {
+export class SceneComponent implements AfterViewInit{
 
   @HostListener('document:click', ['$event']) onClickEvent(
     event: PointerEvent,
   ): void {
     this.sceneViewService.onSceneClick(event);
   }
+  @HostListener('window:resize', ['$event']) onComponentResize() {
+    this.sceneViewService.setDocMeta();
+  }
 
+  ngAfterViewInit(){
+    this.sceneViewService.setDocMeta();
+  }
   constructor(
-    private annotationHelpersService: AnnotationHelpersService,
     public sceneViewService: SceneViewService,
-    private elementRef: ElementRef,
   ) {}
 }

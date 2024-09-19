@@ -10,7 +10,7 @@ import {CommonHelpersService} from "./common-helpers.service";
 export class AnnotationHelpersService {
   constructor(private commonHelpersService: CommonHelpersService) {}
 
-  generatedAnnotation(left: number, top: number, documentID: number, ): IAnnotation {
+  generatedAnnotation(top: number, left: number, documentID: number, ): IAnnotation {
     return {
       id: this.commonHelpersService.generatedId,
       documentID,

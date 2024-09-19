@@ -3,3 +3,7 @@ export interface IDocument {
   width: number;
   height: number;
 }
+export interface IDocumentMeta {
+  offsetTop: number;
+  offsetLeft: number;
+}

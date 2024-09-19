@@ -1,11 +1,13 @@
 <div
   class="annotation annotation-drag-area"
-  [style.top.px]="currentSlotTop()"
-  [style.left.px]="currentSlotLeft()"
+  [style.top.px]="currentTop()"
+  [style.left.px]="currentLeft()"
   [style.background-color]="value().view.color"
 >
   <div class="content">
-    {{value().documentID}}
+    <pre
+      >{{ value() | json }}
+    </pre>
   </div>
   <button class="remove" (click)="remove.emit(value())">✖</button>
 </div>
