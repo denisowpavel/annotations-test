@@ -1,10 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   input,
   InputSignal,
+  Signal,
 } from '@angular/core';
 import { IDocument } from '../../types/document';
+import { SceneViewService } from '../../services/scene-view.service';
 
 @Component({
   selector: 'at-document',
@@ -19,5 +22,10 @@ export class DocumentComponent {
     id: 0,
     width: 0,
     height: 0,
+  });
+  constructor(public sceneViewService: SceneViewService) {}
+
+  transformStyle: Signal<string> = computed((): string => {
+    return 'scale(' + this.sceneViewService.view().scale + ')';
   });
 }

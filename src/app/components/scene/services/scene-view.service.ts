@@ -64,4 +64,10 @@ export class SceneViewService {
       (a) => a.id !== unnecessary?.id,
     );
   }
+
+  updateScale(delta: number): void {
+    this.view.update((v) => ({
+      scale: (v.scale + delta * 0.001)
+    }) as ISceneView);
+  }
 }
