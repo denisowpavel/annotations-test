@@ -21,25 +21,26 @@ export class SceneViewService {
   }
 
   onSceneClick(event: PointerEvent): void {
-    if (
-      this.annotationHelpersService.isAnnotationElement(
-        event.target as HTMLElement,
-      )
-    ) {
+    const target = event.target as HTMLElement;
+    if (this.annotationHelpersService.isAnnotationElement(target)) {
       return;
     }
-    this.annotationCollection?.push(
-      this.annotationHelpersService.generatedAnnotation(
-        event.pageX,
-        event.pageY,
-      ),
-    );
+    if (this.documentHelpersService.isDocumentElement(target)) {
+      console.log()
+      this.annotationCollection?.push(
+        this.annotationHelpersService.generatedAnnotation(
+          event.pageX,
+          event.pageY,
+          this.documentHelpersService.documentIdByElement(target),
+        ),
+      );
+    }
   }
   removeAnnotation(unnecessary: IAnnotation) {
     if (!unnecessary) {
       throw 'remove empty annotation';
     }
-    this.annotationCollection = this.annotationCollection?.filter(
+    this.annotationCollection = this.annotationCollection.filter(
       (a) => a.id !== unnecessary?.id,
     );
   }

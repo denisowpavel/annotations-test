@@ -2,15 +2,18 @@ import { Injectable } from '@angular/core';
 import { randomColors } from './random-values';
 import { IAnnotation } from '../types/annotation';
 import {LogicalFileSystem} from "@angular/compiler-cli";
+import {CommonHelpersService} from "./common-helpers.service";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnnotationHelpersService {
-  generatedAnnotation(left: number, top: number): IAnnotation {
+  constructor(private commonHelpersService: CommonHelpersService) {}
+
+  generatedAnnotation(left: number, top: number, documentID: number, ): IAnnotation {
     return {
-      id: this.generatedId,
-      documentID: 0,
+      id: this.commonHelpersService.generatedId,
+      documentID,
       view: {
         color: this.generatedColor,
         top,
@@ -18,19 +21,15 @@ export class AnnotationHelpersService {
       },
     };
   }
-  get generatedId(): number {
-    return Math.floor(Math.random() * 999999999999);
-  }
+
   get generatedColor(): string {
     return randomColors[Math.floor(Math.random() * randomColors.length)];
   }
 
-  isAnnotationElement(element: HTMLElement): boolean{
-    if(!element.parentElement){
-      return false;
-    }
-    return element?.classList.contains('annotation-drag-area') || this.isAnnotationElement(element.parentElement)
+  isAnnotationElement(element: HTMLElement): boolean {
+    return this.commonHelpersService.containsClass(
+      element,
+      'annotation-drag-area',
+    );
   }
-
-  constructor() {}
 }

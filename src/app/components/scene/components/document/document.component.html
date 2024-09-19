@@ -2,8 +2,11 @@
   class="document document-area"
   [style.width.px]="value().width"
   [style.height.px]="value().height"
+  [id]="value().id"
+
 >
   <div class="lipsum">
+    {{value().id}}
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. In efficitur
       convallis arcu, nec efficitur justo egestas vel. Class aptent taciti

@@ -2,10 +2,10 @@
   class="annotation annotation-drag-area"
   [style.top.px]="currentSlotTop()"
   [style.left.px]="currentSlotLeft()"
-  [style.background-color]="this.value().view.color"
+  [style.background-color]="value().view.color"
 >
   <div class="content">
-
+    {{value().documentID}}
   </div>
   <button class="remove" (click)="remove.emit(value())">✖</button>
 </div>
