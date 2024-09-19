@@ -1,0 +1,13 @@
+:host {
+  .doc-list {
+    margin: 50px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    & .doc-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 100px;
+    }
+  }
+}

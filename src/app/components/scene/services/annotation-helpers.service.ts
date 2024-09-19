@@ -10,6 +10,7 @@ export class AnnotationHelpersService {
   generatedAnnotation(left: number, top: number): IAnnotation {
     return {
       id: this.generatedId,
+      documentID: 0,
       view: {
         color: this.generatedColor,
         top,

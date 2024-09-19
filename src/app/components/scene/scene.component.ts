@@ -10,11 +10,12 @@ import { AnnotationComponent } from './components/annotation/annotation.componen
 import { IAnnotation } from './types/annotation';
 import { JsonPipe } from '@angular/common';
 import { AnnotationHelpersService } from './services/annotation-helpers.service';
+import {DocumentComponent} from "./components/document/document.component";
 
 @Component({
   selector: 'at-scene',
   standalone: true,
-  imports: [RouterOutlet, AnnotationComponent, JsonPipe],
+  imports: [RouterOutlet, AnnotationComponent, JsonPipe, DocumentComponent],
   templateUrl: './scene.component.html',
   styleUrl: './scene.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

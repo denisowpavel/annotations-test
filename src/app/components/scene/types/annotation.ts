@@ -1,5 +1,6 @@
 export interface IAnnotation {
   id: number;
+  documentID: number;
   view: IAnnotationView;
   content?: IAnnotationContent;
 }

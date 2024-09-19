@@ -1,0 +1,11 @@
+:host {
+  .document {
+    user-select: none;
+    background-color: white;
+    overflow: hidden;
+    & .lipsum{
+      padding: 100px;
+    }
+
+  }
+}

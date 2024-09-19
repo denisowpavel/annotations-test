@@ -22,6 +22,7 @@ import { JsonPipe } from '@angular/common';
 export class AnnotationComponent {
   value: InputSignal<IAnnotation> = input({
     id: 0,
+    documentID: 0,
     view: {
       top: 0,
       left: 0,
