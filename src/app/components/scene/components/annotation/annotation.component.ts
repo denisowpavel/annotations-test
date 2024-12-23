@@ -15,11 +15,12 @@ import { IAnnotation } from '../../types/annotation';
 import { JsonPipe } from '@angular/common';
 import { SceneViewService } from '../../services/scene-view.service';
 import { IDocument, IDocumentMeta } from '../../types/document';
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'at-annotation',
   standalone: true,
-  imports: [JsonPipe],
+  imports: [JsonPipe, FormsModule],
   templateUrl: './annotation.component.html',
   styleUrl: './annotation.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,6 +36,7 @@ export class AnnotationComponent implements OnInit {
     },
   });
   remove: OutputEmitterRef<IAnnotation> = output();
+  update: OutputEmitterRef<IAnnotation> = output();
   docMeta?: WritableSignal<IDocumentMeta>;
   documentData?: IDocument;
   constructor(public sceneViewService: SceneViewService) {}
@@ -58,7 +60,7 @@ export class AnnotationComponent implements OnInit {
         (this.documentData.height / 2) +
       1;
     const scaleShift = scaleStep * scaleCoefficient;
-    return this.value().view.top + scaleShift+ this.docMeta().offsetTop;
+    return this.value().view.top + scaleShift + this.docMeta().offsetTop;
   });
 
   currentLeft: Signal<number> = computed((): number => {
@@ -74,4 +76,16 @@ export class AnnotationComponent implements OnInit {
     const scaleShift = scaleStep * scaleCoefficient;
     return this.value().view.left + scaleShift + this.docMeta().offsetLeft;
   });
+  onTextChange(val: string): void {
+    this.update.emit({
+      ...this.value(),
+      content: { ...this.value().content, text: val },
+    });
+  }
+  autoGrowTextZone(e: Event) {
+    const target = (e.target as HTMLElement)
+    target.style.height = '0px';
+    target.style.height = target.scrollHeight  + 'px';
+  }
+
 }

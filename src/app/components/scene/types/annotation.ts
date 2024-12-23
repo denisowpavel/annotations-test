@@ -9,4 +9,6 @@ export interface IAnnotationView {
   left: number;
   color: string;
 }
-export interface IAnnotationContent {}
+export interface IAnnotationContent {
+  text?: string;
+}

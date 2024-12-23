@@ -5,14 +5,15 @@
     position: absolute;
     width: 250px;
     padding: 10px 0;
+    backdrop-filter: blur(1.5px);
+    border-radius: 0 10px 10px 10px;
     & .remove {
       display: block;
       position: absolute;
       top: 2px;
       right: 2px;
       background: none;
-      border: 2px solid var(--color-smoke);
-      border-radius: 50%;
+      border: none;
       width: 18px;
       height: 18px;
       font-weight: 900;
@@ -20,7 +21,27 @@
       line-height: 12px;
       text-align: center;
       padding: 0;
-      color: var(--color-smoke);
+      color: var(--color-almost-black);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      background-color: transparent;
+      border: none;
+      height: 22px;
+      color: var(--color-almost-black);
+      font-weight: 500;
+      font-family: system-ui;
+      &:focus,
+      &:focus-visible {
+        outline: none;
+        border: none;
+      }
+      &::placeholder {
+      font-weight: 300;
+
+      }
     }
   }
 }

@@ -44,7 +44,6 @@ export class SceneViewService {
     }
 
     if (this.documentHelpersService.isDocumentElement(target)) {
-
       //TODO: fix zoom factor accuracy
       const docId = this.documentHelpersService.documentIdByElement(target);
 
@@ -57,8 +56,8 @@ export class SceneViewService {
       const documentData = this.documentCollection.find(
         (doc) => doc.id === docId,
       );
-      if(!documentData){
-        throw 'no documentData'
+      if (!documentData) {
+        throw 'no documentData';
       }
       const scaleStepW = (documentData.width / 2) * (this.view().scale - 1);
       const scaleCoefficientW =
@@ -70,7 +69,11 @@ export class SceneViewService {
       const scaleShiftH = scaleStepH * scaleCoefficientH;
 
       this.annotationCollection?.push(
-        this.annotationHelpersService.generatedAnnotation(top-scaleShiftH, left-scaleShiftW, docId),
+        this.annotationHelpersService.generatedAnnotation(
+          top - scaleShiftH,
+          left - scaleShiftW,
+          docId,
+        ),
       );
     }
   }
@@ -81,6 +84,16 @@ export class SceneViewService {
     this.annotationCollection = this.annotationCollection.filter(
       (a) => a.id !== unnecessary?.id,
     );
+  }
+
+  updateAnnotation(updated: IAnnotation) {
+    const updatedIndex = this.annotationCollection.findIndex(
+      (a) => a.id === updated?.id,
+    );
+    if (updatedIndex === -1) {
+      throw 'update no annotation';
+    }
+    this.annotationCollection[updatedIndex].view.color = updated.view.color;
   }
 
   updateScale(delta: number): void {
