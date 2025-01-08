@@ -1,4 +1,8 @@
 <cite
+  cdkDrag
+  draggable="true"
+  (cdkDragStarted)="onDragStarted($event)"
+  (cdkDragEnded)="onDragOver($event)"
   class="annotation annotation-drag-area"
   [style.top.px]="currentTop()"
   [style.left.px]="currentLeft()"
@@ -8,7 +12,7 @@
     <textarea
       (ngModelChange)="onTextChange($event)"
       [ngModel]="value().content?.text"
-      (keyup)="autoGrowTextZone($event)"
+      (keyup)="fixTextHeight($event)"
       placeholder="Add annotation"
     ></textarea>
     <pre

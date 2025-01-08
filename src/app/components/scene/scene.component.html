@@ -6,6 +6,7 @@
     [value]="annotation"
     (remove)="sceneViewService.removeAnnotation($event)"
     (update)="sceneViewService.updateAnnotation($event)"
+    (dragmove)="sceneViewService.updatePosition($event)"
   ></at-annotation>
 }
 

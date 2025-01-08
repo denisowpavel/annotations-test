@@ -7,6 +7,9 @@
     padding: 10px 0;
     backdrop-filter: blur(1.5px);
     border-radius: 0 10px 10px 10px;
+    &-drag-area{
+      cursor: pointer;
+    }
     & .remove {
       display: block;
       position: absolute;

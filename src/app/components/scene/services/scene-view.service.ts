@@ -4,6 +4,7 @@ import { AnnotationHelpersService } from './annotation-helpers.service';
 import { INITIAL_SCENE_VIEW, ISceneView } from '../types/scene';
 import { DocumentHelpersService } from './document-helpers.service';
 import { IDocument, IDocumentMeta } from '../types/document';
+import { IAnnotationDrag } from '../types/events';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +47,6 @@ export class SceneViewService {
     if (this.documentHelpersService.isDocumentElement(target)) {
       //TODO: fix zoom factor accuracy
       const docId = this.documentHelpersService.documentIdByElement(target);
-
       const left =
         event.pageX -
         (this.documentHelpersService.documentElement(target)?.offsetLeft || 0);
@@ -94,6 +94,31 @@ export class SceneViewService {
       throw 'update no annotation';
     }
     this.annotationCollection[updatedIndex].view.color = updated.view.color;
+  }
+  updatePosition(event: IAnnotationDrag) {
+    this.annotationCollection = this.annotationCollection.map((a) => {
+      if (a.id !== event.id) {
+        return a;
+      }
+      const doc = this.documentCollection.find(
+        (d) => d.id === event.documentID,
+      );
+      return {
+        ...a,
+        view: {
+          ...a.view,
+          top: Math.min(
+            Math.max(a.view.top + event.shiftY / this.view().scale, 0),
+            doc && 'height' in doc ? doc.height : Infinity,
+          ),
+          left: Math.min(
+            Math.max(a.view.left + event.shiftX / this.view().scale, 0),
+            doc && 'width' in doc ? doc.width : Infinity,
+          ),
+        },
+      };
+    });
+    return;
   }
 
   updateScale(delta: number): void {
