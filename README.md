@@ -1,27 +1,21 @@
 # AnnotationsTest
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.4.
+This is a test application for demonstrating document annotations. It allows users to add, delete, move annotations, and attach images to annotations. Additionally, the application enables zooming in and out of the document while preserving annotation coordinates. 
 
-## Development server
+To enter debug mode, press the `*` key on the keyboard
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Angular version 18.2.4.
 
-## Code scaffolding
+## Run dev server
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4240/`.
 
-## Build
+## Сontrol
+Use the buttons, control the scene:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+ `+` To zoom in
 
-## Running unit tests
+ `-` To zoom out
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+ `*` To switch to debug mode and back
+ 
