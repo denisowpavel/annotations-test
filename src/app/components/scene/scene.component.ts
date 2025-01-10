@@ -20,6 +20,8 @@ import { DocumentComponent } from './components/document/document.component';
 })
 
 export class SceneComponent implements AfterViewInit {
+  debugMode = false;
+
   @HostListener('document:click', ['$event']) onClickEvent(
     event: PointerEvent,
   ): void {
@@ -40,6 +42,9 @@ export class SceneComponent implements AfterViewInit {
   }
   @HostListener('document:keydown.-', ['$event']) zoomOut(): void {
     this.updateScale(-100);
+  }
+  @HostListener('document:keydown.*', ['$event']) switchDebugMode(): void {
+    this.debugMode = !this.debugMode;
   }
   ngAfterViewInit() {
     this.sceneViewService.setDocMeta();

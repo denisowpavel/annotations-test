@@ -93,8 +93,9 @@ export class SceneViewService {
     if (updatedIndex === -1) {
       throw 'update no annotation';
     }
-    this.annotationCollection[updatedIndex].view.color = updated.view.color;
+    this.annotationCollection[updatedIndex] = {... updated};
   }
+
   updatePosition(event: IAnnotationDrag) {
     this.annotationCollection = this.annotationCollection.map((a) => {
       if (a.id !== event.id) {

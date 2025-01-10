@@ -11,17 +11,22 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { IAnnotation } from '../../types/annotation';
-import { JsonPipe } from '@angular/common';
+import { JsonPipe, NgOptimizedImage } from '@angular/common';
 import { SceneViewService } from '../../services/scene-view.service';
 import { IDocument, IDocumentMeta } from '../../types/document';
 import { FormsModule } from '@angular/forms';
 import { IAnnotationDrag } from '../../types/events';
-import {CdkDrag, CdkDragEnd, CdkDragStart, DragRef} from '@angular/cdk/drag-drop';
+import {
+  CdkDrag,
+  CdkDragEnd,
+  CdkDragStart,
+  DragRef,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'at-annotation',
   standalone: true,
-  imports: [JsonPipe, FormsModule, CdkDrag],
+  imports: [JsonPipe, FormsModule, CdkDrag, NgOptimizedImage],
   templateUrl: './annotation.component.html',
   styleUrl: './annotation.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,6 +41,7 @@ export class AnnotationComponent implements OnInit {
       color: '#F00',
     },
   });
+  debugMode: InputSignal<boolean> = input(false);
   remove: OutputEmitterRef<IAnnotation> = output();
   update: OutputEmitterRef<IAnnotation> = output();
   dragmove: OutputEmitterRef<IAnnotationDrag> = output();
@@ -107,5 +113,24 @@ export class AnnotationComponent implements OnInit {
       shiftX: e.distance.x,
       shiftY: e.distance.y,
     });
+  }
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.update.emit({
+          ...this.value(),
+          content: {
+            ...this.value().content,
+            imageData: reader.result as string,
+          },
+        });
+      };
+      reader.onerror = (error) => {
+        throw error;
+      };
+    }
   }
 }

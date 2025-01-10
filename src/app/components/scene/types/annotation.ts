@@ -11,4 +11,5 @@ export interface IAnnotationView {
 }
 export interface IAnnotationContent {
   text?: string;
+  imageData?: string;
 }
